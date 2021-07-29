@@ -1,0 +1,55 @@
+---
+title: "Data Cleanse"
+author: "Marton Marek"
+date: "29/07/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#libraries
+library(readr)
+library(dplyr)
+library(tidyr)
+```
+
+## Covid Data
+
+```{r covid}
+
+#load covid data from csv file
+original_covid_df <- read.csv("owid-covid-data.csv")
+
+```
+
+
+```{r dataset, echo=FALSE}
+
+#create a new dataset that includes all dates
+
+#get all country codes
+iso_code_list <- original_covid_df %>% 
+  select(iso_code) %>% 
+  unique()
+
+#generate dates
+dates <- seq.Date(min(as.Date("2020-01-01")), 
+                  max(as.Date("2021-07-19")), by = "day")
+
+#assign every date to every iso code
+iso_date <- crossing(dates, iso_code_list)
+
+# we need to joins -
+# 1) where all data is same for every date
+# 2) where we only copy data per existing date (and then backfill rest)
+
+
+
+
+
+
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
