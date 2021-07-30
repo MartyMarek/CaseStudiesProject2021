@@ -14,12 +14,16 @@ library(dplyr)
 library(tidyr)
 ```
 
+
 ## Covid Data
 
 ```{r covid}
 
 #load covid data from csv file
 original_covid_df <- read.csv("owid-covid-data.csv")
+
+#convert date to right format
+original_covid_df[,"date"] <- as.Date(original_covid_df[,"date"], format = "%d/%m/%Y")
 
 ```
 
@@ -34,20 +38,83 @@ iso_code_list <- original_covid_df %>%
   unique()
 
 #generate dates
-dates <- seq.Date(min(as.Date("2020-01-01")), 
+date <- seq.Date(min(as.Date("2020-01-01")), 
                   max(as.Date("2021-07-19")), by = "day")
 
 #assign every date to every iso code
-iso_date <- crossing(dates, iso_code_list)
+iso_date <- crossing(date, iso_code_list)
 
-# we need to joins -
-# 1) where all data is same for every date
-# 2) where we only copy data per existing date (and then backfill rest)
+str(iso_date)
 
-
+```
 
 
+```{r join}
 
+#join the new df including all dates and iso codes to the old dataset
+new_covid_df <- left_join(iso_date, original_covid_df, 
+                          by = c("iso_code" = "iso_code", "date" = "date"))
+
+#copy all consistent columns (data that doesn't change by date) to all rows 
+new_covid_df <- new_covid_df %>% 
+  group_by(iso_code) %>% 
+  fill(continent, location, date, population, population_density,
+         median_age, aged_65_older, aged_70_older, gdp_per_capita, 
+         extreme_poverty, cardiovasc_death_rate, diabetes_prevalence,
+         female_smokers, male_smokers, handwashing_facilities,
+         hospital_beds_per_thousand, life_expectancy, human_development_index,
+         excess_mortality, .direction = "downup")
+
+
+#missing total case and death values from jan 1, 2020 can be assumed to be zero, 
+#until the first case is reported by that country
+
+#sets all jan 1, 2020 total_cases NA values to 0
+new_covid_df[(new_covid_df$date == as.Date("2020-01-01")) &
+               (is.na(new_covid_df$total_cases)),]$total_cases <- 0
+
+#sets all jan 1, 2020 total_deaths NA values to 0
+new_covid_df[(new_covid_df$date == as.Date("2020-01-01")) &
+               (is.na(new_covid_df$total_deaths)),]$total_deaths <- 0
+
+#sets all jan 1, 2020 total_cases_per_million NA values to 0
+new_covid_df[(new_covid_df$date == as.Date("2020-01-01")) &
+               (is.na(new_covid_df$total_cases_per_million)),]$total_cases_per_million <- 0
+
+#sets all jan 1, 2020 total_deaths_per_million NA values to 0
+new_covid_df[(new_covid_df$date == as.Date("2020-01-01")) &
+               (is.na(new_covid_df$total_deaths_per_million)),]$total_deaths_per_million <- 0
+
+#sets all jan 1, 2020 stringency_index NA values to 0
+new_covid_df[(new_covid_df$date == as.Date("2020-01-01")) &
+               (is.na(new_covid_df$stringency_index)),]$stringency_index <- 0
+
+
+#now downward fill all above columns
+new_covid_df <- new_covid_df %>% 
+  group_by(iso_code) %>% 
+  fill(total_cases, total_deaths, total_cases_per_million, 
+       total_deaths_per_million, stringency_index, .direction = "down") %>% 
+  ungroup()
+
+#sets all NA's in dynamically changing columns to 0 (eg. new cases per day)
+
+new_covid_df[is.na(new_covid_df$new_cases),]$new_cases <- 0
+
+new_covid_df[is.na(new_covid_df$new_deaths),]$new_deaths <- 0
+
+new_covid_df[is.na(new_covid_df$new_cases_per_million),]$new_cases_per_million <- 0
+
+new_covid_df[is.na(new_covid_df$new_deaths_per_million),]$new_deaths_per_million <- 0
+
+
+new_covid_df
+
+
+```
+``` {r save file}
+
+write.csv(new_covid_df, "covid_data.csv")
 
 
 ```
