@@ -1,0 +1,88 @@
+---
+title: "scatterplots"
+author: "Marton Marek"
+date: "29/07/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#libraries
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(plotly)
+```
+
+
+
+```{r load data}
+df <- read.csv("covid_data.csv")
+```
+
+## Plots
+
+
+```{r continent scatter plots, echo=FALSE}
+
+conti_df <- df %>% 
+  group_by(continent, date) %>% 
+  summarise(continent_new_cases = sum(new_cases), Stringency = mean(stringency_index), 
+            conti_total = sum(total_cases))
+
+conti_df[conti_df == ""] <- NA
+
+conti_df <- na.omit(conti_df)
+            
+fig <- conti_df %>% 
+  plot_ly(
+    x = ~continent_new_cases,
+    y = ~stringent,
+    size = ~conti_total,
+    color = ~continent,
+    frame = ~date,
+    type = 'scatter',
+    mode = 'markers'
+  )
+
+fig <- fig %>%  layout (
+  xaxis = list (type = "log")
+)
+
+fig
+
+```
+
+``` {r save}
+library(htmlwidgets)
+
+saveWidget(fig, "scatter.html", selfcontained = F, libdir = "lib")
+
+
+```
+
+
+## Country level plot - 
+
+
+```{r scatter plots, echo=FALSE}
+
+fig <- df %>% 
+  plot_ly(
+    x = ~new_cases,
+    y = ~stringency_index,
+    size = ~total_cases,
+    color = ~location,
+    frame = ~date,
+    type = 'scatter',
+    mode = 'markers'
+  )
+
+fig <- fig %>%  layout (
+  xaxis = list (type = "log")
+)
+
+fig
+
+```
