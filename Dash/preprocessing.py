@@ -48,12 +48,23 @@ covid_regions.to_pickle(".\\data\\covid_regions.pkl")
 
 #region Home_Scatter_Testing_01
 
-mean_stringency = covid_countries.groupby('location')['stringency_index'].mean()
-total_deaths = covid_countries.groupby('location')['total_deaths'].max()
-max_population = covid_countries.groupby('location')['population'].max()
-plot_data = pd.concat([mean_stringency,total_deaths,max_population],axis=1)
-plot_data = plot_data.merge(covid_countries[['continent','location']],how='left',on='location')
-plot_data['total_deaths_per_population'] = plot_data['total_deaths']/plot_data['population']
+plot_data = covid_countries.groupby(
+    [
+        'location'
+    ]
+).agg(
+    {
+        'stringency_index': 'mean',
+        'total_deaths': 'max',
+        'population': 'max'
+    }
+).merge(
+    covid_countries[['continent','location']],
+    how='left',
+    on='location'
+).assign(
+    total_deaths_per_population = lambda row: row['total_deaths']/row['population']
+)
 
 plot_data.to_pickle(".\\data\\plots\\home_scatter_test_01.pkl")
 
@@ -61,7 +72,19 @@ plot_data.to_pickle(".\\data\\plots\\home_scatter_test_01.pkl")
 
 #region continent_scatter_marty_01
 
-plot_data = covid_countries.groupby(['continent','date']).agg({'new_cases' : 'sum', 'stringency_index' : 'sum', 'total_cases' : 'sum'})
+plot_data = covid_countries.groupby(
+    [
+        'continent',
+        'date'
+    ]
+).agg(
+    {
+        'new_cases' : 'sum',
+        'stringency_index' : 'sum',
+        'total_cases' : 'sum'
+    }
+)
+
 plot_data.to_pickle(".\\data\\plots\\continent_scatter_marty_01.pkl")
 
 #endregion
