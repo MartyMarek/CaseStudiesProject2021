@@ -1,0 +1,226 @@
+iso_code,location,total_deaths,total_deaths_per_million,stringency_index
+ABW,Aruba,0.0,0.0,25.93
+AFG,Afghanistan,6.213,159.601,46.3
+AGO,Angola,0.969,29.483,41.67
+AIA,Anguilla,0.0,0.0,0.0
+ALB,Albania,2.456,853.43,37.96
+AND,Andorra,0.127,1643.694,46.3
+ARE,United Arab Emirates,1.9,192.105,63.43
+ARG,Argentina,101.955,2255.852,75.0
+ARM,Armenia,4.569,1541.896,0.0
+ATG,Antigua and Barbuda,0.042,428.887,0.0
+AUS,Australia,0.915,35.883,68.06
+AUT,Austria,10.729,1191.264,49.07
+AZE,Azerbaijan,4.994,492.545,58.33
+BDI,Burundi,0.008,0.673,15.74
+BEL,Belgium,25.213,2175.482,50.93
+BEN,Benin,0.107,8.826,38.89
+BES,Bonaire Sint Eustatius and Saba,0.0,0.0,0.0
+BFA,Burkina Faso,0.169,8.085,22.22
+BGD,Bangladesh,18.125,110.056,86.11
+BGR,Bulgaria,18.177,2615.981,62.96
+BHR,Bahrain,1.38,811.01,51.85
+BHS,Bahamas,0.273,694.218,51.39
+BIH,Bosnia and Herzegovina,9.669,2947.134,35.19
+BLR,Belarus,3.334,352.83,43.52
+BLZ,Belize,0.332,834.966,63.89
+BMU,Bermuda,0.0,0.0,47.22
+BOL,Bolivia,17.475,1497.041,27.78
+BRA,Brazil,542.756,2553.432,60.65
+BRB,Barbados,0.048,167.031,50.93
+BRN,Brunei,0.003,6.857,40.74
+BTN,Bhutan,0.002,2.592,63.43
+BWA,Botswana,1.328,564.716,59.26
+CAF,Central African Republic,0.098,20.291,11.11
+CAN,Canada,26.466,701.232,62.5
+CHE,Switzerland,10.903,1259.79,48.15
+CHL,Chile,34.539,1806.791,84.72
+CHN,China,4.636,3.221,79.17
+CIV,Cote d'Ivoire,0.322,12.207,20.37
+CMR,Cameroon,1.33,50.102,29.63
+COD,Democratic Republic of Congo,1.018,11.367,40.74
+COG,Congo,0.174,31.533,48.15
+COK,Cook Islands,0.0,0.0,0.0
+COL,Colombia,116.753,2294.544,70.37
+COM,Comoros,0.147,169.044,0.0
+CPV,Cape Verde,0.295,530.587,59.26
+CRI,Costa Rica,4.906,963.072,54.63
+CUB,Cuba,1.966,173.573,65.28
+CUW,Curacao,0.0,0.0,0.0
+CYM,Cayman Islands,0.0,0.0,0.0
+CYP,Cyprus,0.39,439.187,38.89
+CZE,Czechia,30.338,2832.949,37.96
+DEU,Germany,91.404,1090.949,67.59
+DJI,Djibouti,0.155,156.882,54.63
+DMA,Dominica,0.0,0.0,31.48
+DNK,Denmark,2.543,439.038,47.22
+DOM,Dominican Republic,3.916,360.991,62.96
+DZA,Algeria,3.956,90.215,50.46
+ECU,Ecuador,21.958,1244.569,58.33
+EGY,Egypt,16.452,160.767,43.52
+ERI,Eritrea,0.032,9.023,62.04
+ESP,Spain,81.119,1734.988,50.46
+EST,Estonia,1.271,958.132,23.15
+ETH,Ethiopia,4.357,37.899,43.52
+FIN,Finland,0.979,176.692,43.98
+FJI,Fiji,0.113,126.054,67.59
+FLK,Falkland Islands,0.0,0.0,0.0
+FRA,France,111.682,1652.975,41.2
+FRO,Faeroe Islands,0.0,0.0,41.67
+FSM,Micronesia (country),0.0,0.0,0.0
+GAB,Gabon,0.163,73.234,67.59
+GBR,United Kingdom,129.007,1900.348,43.98
+GEO,Georgia,5.566,1395.276,64.81
+GGY,Guernsey,0.0,0.0,0.0
+GHA,Ghana,0.812,26.132,42.59
+GIB,Gibraltar,0.0,0.0,0.0
+GIN,Guinea,0.19,14.468,62.04
+GMB,Gambia,0.19,78.621,33.33
+GNB,Guinea-Bissau,0.073,37.094,0.0
+GNQ,Equatorial Guinea,0.123,87.67,0.0
+GRC,Greece,12.834,1231.309,54.17
+GRD,Grenada,0.001,8.887,0.0
+GRL,Greenland,0.0,0.0,38.89
+GTM,Guatemala,9.927,554.099,52.78
+GUY,Guyana,0.512,650.937,60.19
+HKG,Hong Kong,0.212,28.278,65.74
+HND,Honduras,7.391,746.218,78.7
+HRV,Croatia,8.24,2007.177,36.11
+HTI,Haiti,0.508,44.552,50.93
+HUN,Hungary,30.017,3107.237,27.78
+IDN,Indonesia,74.92,273.907,68.98
+IMN,Isle of Man,0.0,0.0,0.0
+IND,India,414.482,300.348,81.94
+IRL,Ireland,5.018,1016.243,53.7
+IRN,Iran,87.374,1040.254,74.54
+IRQ,Iraq,17.892,444.826,64.81
+ISL,Iceland,0.03,87.912,26.85
+ISR,Israel,6.45,745.187,29.63
+ITA,Italy,127.874,2114.954,75.46
+JAM,Jamaica,1.155,390.05,69.44
+JEY,Jersey,0.0,0.0,0.0
+JOR,Jordan,9.896,969.898,51.85
+JPN,Japan,15.006,118.647,50.46
+KAZ,Kazakhstan,3.612,192.366,71.3
+KEN,Kenya,3.783,70.354,65.74
+KGZ,Kyrgyzstan,2.186,335.061,57.41
+KHM,Cambodia,1.128,67.468,72.69
+KIR,Kiribati,0.0,0.0,22.22
+KNA,Saint Kitts and Nevis,0.003,56.399,0.0
+KOR,South Korea,2.059,40.161,50.0
+KWT,Kuwait,2.238,524.053,60.19
+LAO,Laos,0.005,0.687,57.87
+LBN,Lebanon,7.886,1155.383,71.3
+LBR,Liberia,0.148,29.262,55.56
+LBY,Libya,3.299,480.114,72.22
+LCA,Saint Lucia,0.087,473.781,0.0
+LIE,Liechtenstein,0.059,1547.054,45.37
+LKA,Sri Lanka,3.827,178.721,81.48
+LSO,Lesotho,0.339,158.245,42.59
+LTU,Lithuania,4.404,1617.755,29.63
+LUX,Luxembourg,0.821,1311.552,41.67
+LVA,Latvia,2.544,1348.742,41.67
+MAC,Macao,0.0,0.0,23.15
+MAR,Morocco,9.466,256.458,66.67
+MCO,Monaco,0.033,840.893,37.96
+MDA,Moldova,6.227,1543.643,56.48
+MDG,Madagascar,0.937,33.838,53.7
+MDV,Maldives,0.216,399.599,0.0
+MEX,Mexico,236.469,1834.049,44.44
+MHL,Marshall Islands,0.0,0.0,0.0
+MKD,North Macedonia,5.487,2633.701,0.0
+MLI,Mali,0.53,26.172,48.15
+MLT,Malta,0.42,951.218,43.52
+MMR,Myanmar,5.281,97.06,69.91
+MNE,Montenegro,1.623,2584.14,0.0
+MNG,Mongolia,0.74,225.727,59.26
+MOZ,Mozambique,1.138,36.41,56.48
+MRT,Mauritania,0.511,109.901,39.81
+MSR,Montserrat,0.0,0.0,0.0
+MUS,Mauritius,0.019,14.94,47.22
+MWI,Malawi,1.352,70.674,45.37
+MYS,Malaysia,7.148,220.849,80.56
+NAM,Namibia,2.532,996.491,78.7
+NCL,New Caledonia,0.0,0.0,0.0
+NER,Niger,0.194,8.014,19.44
+NGA,Nigeria,2.128,10.323,52.78
+NIC,Nicaragua,0.193,29.134,0.0
+NIU,Niue,0.0,0.0,0.0
+NLD,Netherlands,18.063,1054.166,37.96
+NOR,Norway,0.796,146.83,54.63
+NPL,Nepal,9.582,328.862,68.52
+NRU,Nauru,0.0,0.0,0.0
+NZL,New Zealand,0.026,5.392,22.22
+OMN,Oman,3.498,684.993,77.78
+OWID_CYN,Northern Cyprus,0.0,0.0,0.0
+OWID_EUN,European Union,742.362,1668.533,0.0
+OWID_INT,International,0.015,0.0,0.0
+OWID_KOS,Kosovo,2.268,1173.443,37.96
+OWID_WRL,World,4096.142,525.497,0.0
+PAK,Pakistan,22.848,103.435,63.89
+PAN,Panama,6.71,1555.124,70.37
+PCN,Pitcairn,0.0,0.0,0.0
+PER,Peru,195.243,5921.506,70.37
+PHL,Philippines,26.786,244.44,74.54
+PNG,Papua New Guinea,0.187,20.901,55.56
+POL,Poland,75.215,1987.365,50.0
+PRT,Portugal,17.215,1688.29,63.89
+PRY,Paraguay,14.34,2010.507,49.07
+PSE,Palestine,3.589,703.53,71.3
+PYF,French Polynesia,0.0,0.0,0.0
+QAT,Qatar,0.599,207.91,50.0
+ROU,Romania,34.254,1780.568,31.48
+RUS,Russia,146.686,1005.15,46.76
+RWA,Rwanda,0.666,51.42,54.63
+SAU,Saudi Arabia,8.048,231.172,53.7
+SDN,Sudan,2.776,63.308,19.44
+SEN,Senegal,1.227,73.28,23.15
+SGP,Singapore,0.036,6.153,50.93
+SHN,Saint Helena,0.0,0.0,0.0
+SLB,Solomon Islands,0.0,0.0,25.0
+SLE,Sierra Leone,0.115,14.416,56.48
+SLV,El Salvador,2.499,385.279,35.19
+SMR,San Marino,0.09,2651.895,38.89
+SOM,Somalia,0.781,49.14,29.63
+SRB,Serbia,7.084,1041.061,32.41
+SSD,South Sudan,0.117,10.452,25.0
+STP,Sao Tome and Principe,0.037,168.826,0.0
+SUR,Suriname,0.614,1046.649,81.48
+SVK,Slovakia,12.527,2294.472,53.24
+SVN,Slovenia,4.425,2128.497,35.19
+SWE,Sweden,14.646,1450.204,37.04
+SWZ,Eswatini,0.719,619.74,67.59
+SXM,Sint Maarten (Dutch part),0.0,0.0,0.0
+SYC,Seychelles,0.086,874.517,76.85
+SYR,Syria,1.905,108.853,43.98
+TCA,Turks and Caicos Islands,0.0,0.0,0.0
+TCD,Chad,0.174,10.593,27.78
+TGO,Togo,0.138,16.669,42.59
+THA,Thailand,3.422,49.026,53.7
+TJK,Tajikistan,0.112,11.743,29.63
+TKM,Turkmenistan,0.0,0.0,62.04
+TLS,Timor,0.026,19.72,57.87
+TON,Tonga,0.0,0.0,35.19
+TTO,Trinidad and Tobago,0.998,713.116,74.07
+TUN,Tunisia,17.644,1492.899,76.85
+TUR,Turkey,50.604,600.007,64.81
+TUV,Tuvalu,0.0,0.0,0.0
+TWN,Taiwan,0.769,32.288,71.3
+TZA,Tanzania,0.021,0.352,11.11
+UGA,Uganda,2.392,52.294,87.04
+UKR,Ukraine,55.183,1261.794,54.63
+URY,Uruguay,5.889,1695.297,59.26
+USA,United States,609.231,1840.562,23.61
+UZB,Uzbekistan,0.801,23.932,53.7
+VAT,Vatican,0.0,0.0,0.0
+VCT,Saint Vincent and the Grenadines,0.012,108.16,0.0
+VEN,Venezuela,3.392,119.286,86.11
+VGB,British Virgin Islands,0.0,0.0,0.0
+VNM,Vietnam,0.334,3.431,79.17
+VUT,Vanuatu,0.001,3.256,22.22
+WLF,Wallis and Futuna,0.0,0.0,0.0
+WSM,Samoa,0.0,0.0,0.0
+YEM,Yemen,1.37,45.933,37.96
+ZAF,South Africa,67.08,1131.032,72.22
+ZMB,Zambia,3.113,169.332,27.78
+ZWE,Zimbabwe,2.697,181.458,64.81
