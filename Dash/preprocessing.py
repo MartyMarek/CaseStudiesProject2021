@@ -66,7 +66,8 @@ plot_data = covid_countries.groupby(
     total_deaths_per_population = lambda row: row['total_deaths']/row['population']
 )
 
-plot_data.to_pickle(".\\data\\plots\\home_scatter_test_01.pkl")
+#plot_data.to_pickle(".\\data\\plots\\home_scatter_test_01.pkl")
+plot_data.to_csv(".\\data\\plots\\home_scatter_test_01.csv")
 
 #endregion
 
@@ -85,6 +86,7 @@ plot_data = covid_countries.groupby(
     }
 )
 
-plot_data.to_pickle(".\\data\\plots\\continent_scatter_marty_01.pkl")
+#plot_data.to_pickle(".\\data\\plots\\continent_scatter_marty_01.pkl")
+plot_data.to_csv(".\\data\\plots\\continent_scatter_marty_01.csv")
 
 #endregion

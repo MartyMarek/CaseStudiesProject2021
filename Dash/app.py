@@ -10,47 +10,26 @@ from flask import Flask
 
 #region Load Data
 
-data_path = pathlib.Path('./data/covid_data.csv')
-covid_cur_clean = pd.read_csv(data_path)
+#covid_cur_clean = pd.read_csv('.\\data\\covid_data.csv')
+#covid_countries = pd.read_pickle('.\\data\\covid_countries.pkl')
+#covid_regions = pd.read_pickle('.\\data\\covid_regions.pkl')
 
-#endregion
+# Home page
+#home_scatter_test_01 = pd.read_pickle("./data/plots/home_scatter_test_01.pkl")
+home_scatter_test_01 = pd.read_csv("./data/plots/home_scatter_test_01.csv")
 
-#region Preprocess Data
-
-# Define regions list (identified by irregular iso_code values)
-regions_list = [
-    'Africa',
-    'Asia',
-    'European Union',
-    'Europe',
-    'International',
-    'North America',
-    'Oceania',
-    'South America',
-    'World'
-]
-
-# Split countries
-covid_countries = covid_cur_clean.loc[~covid_cur_clean['location'].isin(regions_list)]
-# Split regions
-covid_regions = covid_cur_clean.loc[covid_cur_clean['location'].isin(regions_list)]
-
-mean_stringency = covid_countries.groupby('location')['stringency_index'].mean()
-total_deaths = covid_countries.groupby('location')['total_deaths'].max()
-max_population = covid_countries.groupby('location')['population'].max()
-plot_data = pd.concat([mean_stringency,total_deaths,max_population],axis=1)
-plot_data = plot_data.merge(covid_countries[['continent','location']],how='left',on='location')
-plot_data['total_deaths_per_population'] = plot_data['total_deaths']/plot_data['population']
-
-fig = px.scatter(plot_data, x="stringency_index", y="total_deaths_per_population", color="continent", hover_data=['location'])
+# Continent page
+#continent_scatter_marty_01 = pd.read_csv("./data/plots/continent_scatter_marty_01.csv")
 
 #endregion
 
 #region Start Dash
 
 #external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-server = Flask(__name__)
-app = dash.Dash(server=server, external_stylesheets=[dbc.themes.DARKLY])
+#external_stylesheets=[dbc.themes.DARKLY]
+app = dash.Dash(__name__)
+#server = Flask(__name__)
+#app = dash.Dash(server=server, external_stylesheets=[dbc.themes.DARKLY])
 app.title = 'Dashboard'
 
 #endregion
@@ -70,9 +49,9 @@ navbar = html.Nav(
     children=[
         html.P(className='team-logo', children='TeamSierra'),
         build_navbar_button('Home','/'),
-        build_navbar_button('Confirmed Cases','/page1'),
-        build_navbar_button('Reproduction Rate','/page2'),
-        build_navbar_button('Death Rate','/page2')
+        build_navbar_button('Continent','/continent'),
+        build_navbar_button('Country','/country'),
+        build_navbar_button('Death Rate','/country')
     ]
 )
 
@@ -105,25 +84,41 @@ app.layout = html.Div(
 page_home = html.Div(
     children=[
         html.H1("This is the home page!"),
-        html.Img(src="static\\aepphltiqy911.png"),
         dcc.Graph(
-            figure=fig
+            figure= px.scatter(
+                home_scatter_test_01,
+                x="stringency_index",
+                y="total_deaths_per_population",
+                color="continent",
+                hover_data=['location']
+            )
         )
     ]
 )
 
-page_1 = html.Div(
+page_continent = html.Div(
     children=[
         html.Div(
             className='page-title',
             children=html.H1(
                 children="This is page 1!"
             ),
-        )
+        ),
+        #dcc.Graph(
+        #    figure = px.scatter(
+        #        continent_scatter_marty_01,
+        #        x="new_cases",
+        #        y="stringency_index",
+        #        color=continent_scatter_marty_01.index.get_level_values(0),
+        #        size='total_cases',
+        #        animation_frame=continent_scatter_marty_01.index.get_level_values(1),
+        #        log_x=True
+        #    )
+        #)
     ]
 )
 
-page_2 = html.Div(
+page_country = html.Div(
     children=[
         html.Div(
             className='page-title',
@@ -131,6 +126,17 @@ page_2 = html.Div(
                 children="This is page 2!"
             ),
         )
+        #dcc.Graph(
+        #    figure = px.scatter(
+        #        covid_countries,
+        #        x="new_cases",
+        #        y="stringency_index",
+        #        color="location",
+        #        size='total_cases',
+        #        animation_frame="date",
+        #        log_x=True
+        #    )
+        #)
     ]
 )
 
@@ -145,10 +151,10 @@ page_2 = html.Div(
 def render_page_content(pathname):
     if pathname == "/":
         return page_home
-    elif pathname == "/page1":
-        return page_1
-    elif pathname == "/page2":
-        return page_2
+    elif pathname == "/continent":
+        return page_continent
+    elif pathname == "/country":
+        return page_country
     # If the user tries to reach a different page, return a 404 message
     return dbc.Jumbotron(
         [
@@ -161,4 +167,5 @@ def render_page_content(pathname):
 #endregion
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    #app.run_server(debug=True)
+    app.run_server(debug=False, host='0.0.0.0', port='80')
