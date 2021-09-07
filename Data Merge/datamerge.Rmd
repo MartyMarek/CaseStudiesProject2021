@@ -1,0 +1,54 @@
+---
+title: "Data Merge"
+author: "Marton Marek"
+date: "06/09/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+#libraries
+library(readr)
+library(dplyr)
+library(tidyr)
+```
+
+
+
+```{r load}
+
+summary <- as.data.frame(summary_file)
+
+summary[,"date"] <- as.Date(summary[,"date"], format = "%d/%m/%Y")
+
+#summary <- select(summary, -1)
+
+vacc <-as.data.frame(vacc_file)
+
+vacc[,"date"] <- as.Date(vacc[,"date"], format = "%d/%m/%Y")
+
+joined <- left_join(vacc, summary, by = c("date"))
+
+joined$state <- toupper(joined$state)
+
+
+```
+
+
+``` {r normalise}
+
+normalize <- function(x) {
+  return ((x - min(x)) / (max(x) - min(x)))
+}
+
+```
+
+
+```{r save file}
+
+write.csv(joined, "joined4.csv")
+
+```
+
