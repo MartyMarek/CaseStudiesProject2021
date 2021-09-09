@@ -1,0 +1,49 @@
+---
+title: "twitterdatamerge"
+author: "Marton Marek"
+date: "9/09/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+#libraries
+library(readr)
+library(dplyr)
+library(tidyr)
+```
+
+
+
+```{r load}
+
+summary <- as.data.frame(data)
+
+summary[,"date"] <- as.Date(summary[,"date"], format = "%d/%m/%Y")
+
+twitter <-as.data.frame(tresult2)
+
+twitter[,"date"] <- as.Date(twitter[,"date"], format = "%d/%m/%Y")
+
+tsummary <- twitter %>% 
+  group_by(state, date) %>% 
+  summarise(avr_positive_tweet_sentiment = mean(twitter$twitter_sentiment_positive),
+            avr_neutral_tweet_sentiment = mean(twitter_sentiment_neutral), 
+            avr_negative_tweet_sentiment = mean(twitter_sentiment_negative))
+
+
+joined <- left_join(summary, tsummary, by = c("date" = "date", "state" = "state"))
+
+joined$state <- toupper(joined$state)
+
+
+```
+
+
+```{r save file}
+
+write.csv(joined, "merged.csv")
+
+```
