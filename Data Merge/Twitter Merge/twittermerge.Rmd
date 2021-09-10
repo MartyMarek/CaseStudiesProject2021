@@ -29,7 +29,7 @@ twitter[,"date"] <- as.Date(twitter[,"date"], format = "%d/%m/%Y")
 
 tsummary <- twitter %>% 
   group_by(state, date) %>% 
-  summarise(avr_positive_tweet_sentiment = mean(twitter$twitter_sentiment_positive),
+  summarise(avr_positive_tweet_sentiment = mean(twitter_sentiment_positive),
             avr_neutral_tweet_sentiment = mean(twitter_sentiment_neutral), 
             avr_negative_tweet_sentiment = mean(twitter_sentiment_negative))
 
