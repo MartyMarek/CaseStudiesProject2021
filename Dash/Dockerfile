@@ -11,5 +11,7 @@ ADD . /app/
 
 EXPOSE 80
 
+#RUN python preprocessing.py
+
 ENTRYPOINT [ "python" ]
 CMD ["app.py"]

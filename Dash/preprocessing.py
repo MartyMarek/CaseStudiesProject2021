@@ -10,15 +10,20 @@ import pathlib
 
 #region Load Base Data
 
-covid_cur_clean = pd.read_csv('.\\data\\covid_data.csv')
-covid_countries = pd.read_pickle('.\\data\\covid_countries.pkl')
-covid_regions = pd.read_pickle('.\\data\\covid_regions.pkl')
+#covid_cur_clean = pd.read_csv('.\\data\\covid_data.csv')
+covid_cur_clean = pd.read_csv('./data/covid_data.csv')
+#covid_countries = pd.read_pickle('.\\data\\covid_countries.pkl')
+#covid_regions = pd.read_pickle('.\\data\\covid_regions.pkl')
+
+#covid_cur_clean = pd.read_hdf('.\\data\\covid_data.h5', key='covid_all')
+#covid_countries = pd.read_hdf('.\\data\\covid_data.h5', key='covid_countries')
+#covid_regions = pd.read_hdf('.\\data\\covid_data.h5', key='covid_regions')
 
 #endregion
 
 #region Split regions and countries
 
-'''
+
 
 # Define regions list (identified by irregular iso_code values)
 regions_list = [
@@ -39,10 +44,16 @@ covid_countries = covid_cur_clean.loc[~covid_cur_clean['location'].isin(regions_
 covid_regions = covid_cur_clean.loc[covid_cur_clean['location'].isin(regions_list)]
 
 # Write pickles
-covid_countries.to_pickle(".\\data\\covid_countries.pkl")
-covid_regions.to_pickle(".\\data\\covid_regions.pkl")
+#covid_countries.to_pickle(".\\data\\covid_countries.pkl")
+#covid_regions.to_pickle(".\\data\\covid_regions.pkl")
+#covid_countries.to_hdf('.\\data\\covid_data.h5', key='covid_countries', mode='a')
+#covid_regions.to_hdf('.\\data\\covid_data.h5', key='covid_regions', mode='a')
+#covid_cur_clean.to_hdf('.\\data\\covid_data.h5', key='covid_all', mode='a')
+covid_countries.to_hdf('./data/covid_data.h5', key='covid_countries', mode='a')
+covid_regions.to_hdf('./data/covid_data.h5', key='covid_regions', mode='a')
+covid_cur_clean.to_hdf('./data/covid_data.h5', key='covid_all', mode='a')
 
-'''
+
 
 #endregion
 
@@ -67,8 +78,9 @@ plot_data = covid_countries.groupby(
 )
 
 #plot_data.to_pickle(".\\data\\plots\\home_scatter_test_01.pkl")
-plot_data.to_csv(".\\data\\plots\\home_scatter_test_01.csv")
-
+#plot_data.to_csv(".\\data\\plots\\home_scatter_test_01.csv")
+plot_data.to_hdf('./data/plots/plot_data.h5', key='home_scatter_test_01', mode='a')
+#a = pd.read_hdf('.\\data\\plots\\plot_data.h5', key='home_scatter_test_01')
 #endregion
 
 #region continent_scatter_marty_01
@@ -87,6 +99,7 @@ plot_data = covid_countries.groupby(
 )
 
 #plot_data.to_pickle(".\\data\\plots\\continent_scatter_marty_01.pkl")
-plot_data.to_csv(".\\data\\plots\\continent_scatter_marty_01.csv")
+#plot_data.to_csv(".\\data\\plots\\marty_scatter_01.csv")
+plot_data.to_hdf('./data/plots/plot_data.h5', key='continent_scatter_marty_01', mode='a')
 
 #endregion
