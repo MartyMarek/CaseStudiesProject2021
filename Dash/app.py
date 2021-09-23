@@ -914,7 +914,7 @@ def render(selected_state, selected_transcript_sentiment,selected_twitter_sentim
     transcript_sentiment_text = get_transcript_sentiment_text(selected_transcript_sentiment)
     twitter_sentiment_text = get_twitter_sentiment_text(selected_twitter_sentiment)
     state_text = get_state_text(selected_state)
-    fig_title = "{0} vs. {1} in {2}".format(twitter_sentiment_text, transcript_sentiment_text, state_text)
+    fig_title = "{0} vs. {1} in {2}".format(transcript_sentiment_text, twitter_sentiment_text, state_text)
 
 
     filt = data[data["state"] == selected_state]
