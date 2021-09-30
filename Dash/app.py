@@ -1,10 +1,8 @@
 import dash
-import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table
 from dash.dependencies import Input, Output
-from dash_html_components.Div import Div
 import pandas as pd
 import pathlib
 import plotly.express as px
@@ -12,18 +10,68 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from flask import Flask
 import statsmodels.api as sm
+import geojson
+from geojson_rewind import rewind
 
 
 #region Load & Process Data
 
 # reading in data and converting date to time
+cities = pd.read_csv(".\\data\\australian_cities.csv",index_col='State')
 data = pd.read_csv(".\\data\\merged_aug_updated.csv")
 data.date = pd.to_datetime(data.date, infer_datetime_format=True, dayfirst=True )
 
+# Load geojson
+
+with open(".\\data\\australia_states_simple_final.geojson") as file:
+    geojson_states = geojson.load(file)
+
+geojson_states = rewind(geojson_states, rfc7946=False) # Dear lord, the frustration...
+
+# Build geo data set
+geo_data = pd.DataFrame().assign(
+    count_press = data.query('transcript_sentiment_positive.isnull() == False | transcript_sentiment_neutral.isnull()  == False | transcript_sentiment_negative.isnull()  == False',
+    engine='python'
+    ).groupby(
+        'state'
+    ).agg(
+        {
+            'date': 'count'
+        }
+    ).rename(
+        columns={
+            'date': 'count_press'
+        }
+    ),
+    count_tweets = data.groupby(
+        'state'
+    ).agg(
+        {
+            'tweet_total': 'sum'
+        }
+    ).rename(
+        columns={
+            'tweet_total': 'count_tweets'
+        }
+    ),
+    total_doses = data.groupby(
+        'state'
+    ).agg(
+        {
+            'total_doses': 'max'
+        }
+    )
+).merge(
+    cities[['Population','Lat','Long','GeoMap']],
+    how='left',
+    left_index=True,
+    right_index=True
+)
+
 # filtering data for chosen states and time frame (removing negative daily doses also)
-data.query("state == 'NSW' or state == 'VIC' or state == 'QLD' or state == 'TAS'", inplace=True)
-data.query("date <= '2021-08-31'", inplace =True)
-data.query("daily_doses > 0", inplace =True)
+#data.query("state == 'NSW' or state == 'VIC' or state == 'QLD' or state == 'TAS'", inplace=True)
+#data.query("date <= '2021-08-31'", inplace =True)
+#data.query("daily_doses > 0", inplace =True)
 
 #back filling missing values
 data.bfill(axis = 0, inplace = True)
@@ -83,11 +131,7 @@ data_corr = data.corr(method='pearson')
 
 #region Start Dash
 
-#external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-#external_stylesheets=[dbc.themes.DARKLY]
 app = dash.Dash(__name__)
-#server = Flask(__name__)
-#app = dash.Dash(server=server, external_stylesheets=[dbc.themes.DARKLY])
 app.title = 'Dashboard'
 
 #endregion
@@ -244,24 +288,116 @@ page_home = html.Div(
                 )
             ]
         ),
-        # Correlation Heatmap
+        # Choropleth Maps
         html.Div(
-            className='row-card',
+            className='row-container',
             children=[
                 html.Div(
-                    className='column-container',
+                    className='column-card',
+                    children=[
+                        dcc.Markdown(
+                            className="item-markdown",
+                            children='''
+                            # Scope of Analysis
+                            These plots graphically graphically show the data included in the final presentation of this dashboard.
+                            Over a 6-week period, 10,000 tweets and 80 press conferences were collected and analysed from the capital cities of Victoria New South Wales and Queensland.
+                            This data was combined with daily vaccinations and cases.
+                            '''
+                        )
+                    ]
+                ),
+                html.Div(
+                    className='column-container-66',
+                    children=[
+                        html.Div(
+                            className='column-card',
+                            children=[
+                                dcc.Graph(
+                                    className='item-plot',
+                                    figure=px.choropleth(
+                                        geo_data,
+                                        geojson=geojson_states,
+                                        featureidkey = "properties.STE_NAME21",
+                                        locations='GeoMap',
+                                        color='count_press',
+                                        range_color=(0,max(geo_data['count_press'])),
+                                        color_continuous_scale="Blues",
+                                        basemap_visible=False,
+                                        fitbounds='locations',
+                                        title='Number of Press Conferences'
+                                    ).update_traces(
+                                        marker_line_color='white'
+                                    )
+                                )
+                            ]
+                        ),
+                        html.Div(
+                            className='column-card',
+                            children=[
+                                dcc.Graph(
+                                    className='item-plot',
+                                    figure=px.choropleth(
+                                        geo_data,
+                                        geojson=geojson_states,
+                                        featureidkey = "properties.STE_NAME21",
+                                        locations='GeoMap',
+                                        color='count_tweets',
+                                        range_color=(0,max(geo_data['count_tweets'])),
+                                        color_continuous_scale="Purples",
+                                        basemap_visible=False,
+                                        fitbounds='locations',
+                                        title='Number of Tweets'
+                                    ).update_traces(
+                                        marker_line_color='white'
+                                    )
+                                )
+                            ]
+                        ),
+                        #html.Div(
+                        #    className='column-card',
+                        #    children=[
+                        #        dcc.Graph(
+                        #            className='item-plot',
+                        #            figure=px.choropleth(
+                        #                geo_data,
+                        #                geojson=geojson_states,
+                        #                featureidkey = "properties.STE_NAME21",
+                        #                locations='GeoMap',
+                        #                color='total_doses',
+                        #                range_color=(0,max(geo_data['total_doses'])),
+                        #                color_continuous_scale="Reds",
+                        #                basemap_visible=False,
+                        #                fitbounds='locations',
+                        #                title='Total Vaccine Doses'
+                        #            ).update_traces(
+                        #                marker_line_color='white'
+                        #            )
+                        #        )
+                        #    ]
+                        #)     
+                    ]
+                )
+            ]
+        ),
+        # Correlation Heatmap
+        html.Div(
+            className='row-container',
+            children=[
+                html.Div(
+                    className='column-card-66',
                     children=[
                         dcc.Graph(
                             className='item-plot',
                             figure= px.imshow(
                                 data_corr,
-                                color_continuous_scale='RdBu_r'
+                                color_continuous_scale='RdBu_r',
+                                height=800
                             )
                         ),
                     ]
                 ),
                 html.Div(
-                    className='column-container',
+                    className='column-card',
                     children=[
                         dcc.Markdown(
                             className="item-markdown",
@@ -273,7 +409,7 @@ page_home = html.Div(
                     ]
                 )
             ]
-        ),
+        )
     ]
 )
 
@@ -290,8 +426,10 @@ page_press_conferences = html.Div(
                         dcc.Markdown(
                             className="item-markdown",
                             children='''
-                            # This page is for exploring the messaging from the state governments
-                            Here we want to introduce the different kinds of graphs and analysis on this page.
+                            # Press Conferences from State Governments
+                            This section provides an analysis on the overall sentiment from the state press conferences.
+                            The comparisons made are between press conference sentiment between states (ie. in what sentiment are press conferences delivered by each state). We also look at how case numbers may affect the press conference sentiment. 
+
                             '''
                         )
                     ]
@@ -515,7 +653,7 @@ page_twitter = html.Div(
                             className="item-markdown",
                             children='''
                             # This is for twitter focussed analysis
-                            What did we learn?
+                            This section provides an analysis on the overall sentiment from Twitter. The Twitter data included was based on the combination of one covid related keyword (covid, corona, coronavirus, covid-19, covid19) and one vaccine related keyword (vaccine, vaccination, vaccinated, vaccinate, astrazeneca, pfizer, moderna).
                             '''
                         )
                     ]
@@ -725,6 +863,27 @@ page_twitter = html.Div(
     ]
 )
 
+page_404 = html.Div(
+    className='page-container',
+    children=[
+        # First Row
+        html.Div(
+            className='row-card',
+            children=[
+                dcc.Markdown(
+                    className='item-markdown',
+                    children=[
+                        '''
+                        # 404: Oops! Looks like this page doesn't exist...
+                        Please return to one of the pages linked in the navigation bar.
+                        '''
+                    ]
+                )
+            ]
+        )
+    ]
+)
+
 #endregion
 
 #region Functions
@@ -802,7 +961,12 @@ def render(selected_transcript_sentiment):
         # {0}
         This graph shows the change in sentiment from August 1 to August 31 for Vicotria, Queensland and New South Wales. 
         NSW is consistantly more negative than other states, whilst QLD and VIC are more positive. 
-        All states show a relatively low proportion of neutral sentiment.
+        All states show a relatively low proportion of neutral sentiment, indicating that states are decisive in the message that
+        they are delivering, either positive or negative. The more positive messaging from Victoria and Queensland may be in an
+        effort to increase vaccination rates due to noted public hesitation, or may be driven by increases in daily doses 
+        with more positive remarks being made as a result. It may also be worth considering the differences in messaging as a result of
+        state government party alignment on the political spectrum, 
+        as Queensland and Victoria are Labor governments compared to the Liberal government in New South Wales.
     '''.format(fig_title)
 
     fig = px.line(
@@ -890,9 +1054,15 @@ def render(selected_state, selected_transcript_sentiment, selected_metric):
 
     markdown = '''
         # {0}
-        This graph shows the change in goverment press conference sentiment and the daily doses of covid-19 vaccine administered.
+        These graphs shows the change in goverment press conference sentiment and the daily doses of covid-19 vaccine administered.
         The top portion shows the number of doses in thousands, bottom portion shows the sentiment proportion of transcript for each
-        date. 
+        date. The most notable observation from daily vaccination doses is the reoccurence of large drops in numbers, these seemingly 
+        coincide with the Sunday of every week, rather than any influence from the press conference sentiment. From the Victorian doses,
+        there is a sequence of days from the 13-17 August that get increasingly negative, interestingly the daily doses peaks at its
+        highest point up until August 17. From this point, the number of doses seems to mirror trend in negative sentiment. 
+        Queensland shows the strongest weekly cycle in doses of any state and seems to behave independantly of transcript sentiment.
+        New South Wales shows a slight increase in the number of daily doses from 23-29 August which coincides with more positive
+        messaging in transcripts, possibly reflecting a shift in messaging to elevate vaccine uptake. 
     '''.format(fig_title)
 
     return [fig, fig_bar, markdown]
@@ -936,7 +1106,10 @@ def render(selected_state, selected_transcript_sentiment,selected_twitter_sentim
         This scatterplot allows users to compare transcript and twitter sentiment for selected state. 
         Input is controlled by the dropdowns at the top. 
         Trendline shows the strength of the relationship. 
-        Appears as though there is not a strong relationship between transcript and twitter sentiment.
+        Appears as though there is not a strong relationship between transcript and twitter sentiment amongst any of the states. 
+        This suggests that press-conference messaging is not having a strong impact on twitter user's sentiment, and that this
+        is being driven by external forces. Although it is not a significant relationship, across all three states, more positive 
+        messaging in press conferences seemingly lower positive twitter sentiment.  
     '''.format(fig_title)
 
     return [fig, markdown]
@@ -1245,7 +1418,6 @@ def render_plot(selected_twitter_sentiment,selected_metric):
 
     return [fig, fig_contour, markdown]
 
-
 #endregion
 
 # Render content for selected page
@@ -1261,13 +1433,7 @@ def render_page_content(pathname):
     elif pathname == "/twitter":
         return page_twitter
     # If the user tries to reach a different page, return a 404 message
-    return dbc.Jumbotron(
-        [
-            html.H1("404: Not found", className="text-danger"),
-            html.Hr(),
-            html.P(f"The pathname {pathname} was not recognised..."),
-        ]
-    )
+    return page_404
 
 #endregion
 
